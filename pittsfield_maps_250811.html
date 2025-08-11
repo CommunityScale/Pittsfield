@@ -142,70 +142,6 @@
           </div>
       <span class="leading-snug ms-2">Pittsfield city boundary</span>
     </label>
-    <!--<label class="flex items-start text-sm text-gray-700">
-        <div class="relative">
-            <input type="checkbox" class="sr-only overlay-toggle peer" value="smallCities-layer" checked/>
-            <div class="w-6 h-3.5 bg-gray-300 rounded-full peer-checked:bg-gray-600 transition-colors"></div>
-            <div class="absolute top-[2px] left-[2px] w-2.5 h-2.5 bg-white border border-gray-400 rounded-full transition-transform peer-checked:translate-x-[10px]"></div>
-          </div>
-      <span class="leading-snug ms-2">Small cities</span>
-    </label>
-    <label class="flex items-start text-sm text-gray-700">
-        <div class="relative">
-            <input type="checkbox" class="sr-only overlay-toggle peer" value="villages-layer" checked/>
-            <div class="w-6 h-3.5 bg-gray-300 rounded-full peer-checked:bg-gray-600 transition-colors"></div>
-            <div class="absolute top-[2px] left-[2px] w-2.5 h-2.5 bg-white border border-gray-400 rounded-full transition-transform peer-checked:translate-x-[10px]"></div>
-          </div>
-        <span class="leading-snug ms-2">Villages</span>
-    </label>
-    <label class="flex items-start text-sm text-gray-700"> 
-        <div class="relative">
-            <input type="checkbox" class="sr-only overlay-toggle peer" value="county-layer" checked/>
-            <div class="w-6 h-3.5 bg-gray-300 rounded-full peer-checked:bg-gray-600 transition-colors"></div>
-            <div class="absolute top-[2px] left-[2px] w-2.5 h-2.5 bg-white border border-gray-400 rounded-full transition-transform peer-checked:translate-x-[10px]"></div>
-          </div>
-        <span class="leading-snug ms-2">County boundary</span>
-    </label>
-    <label class="flex items-center justify-between w-full text-sm text-gray-700">--> <!--use this label class for multi-line overlay labels; ensures proper spacing-->
-    <!--    <div class="relative">
-            <input type="checkbox" class="sr-only overlay-toggle peer" value="targetedGrowth-layer" checked/>
-            <div class="w-6 h-3.5 bg-gray-300 rounded-full peer-checked:bg-gray-600 transition-colors"></div>
-            <div class="absolute top-[2px] left-[2px] w-2.5 h-2.5 bg-white border border-gray-400 rounded-full transition-transform peer-checked:translate-x-[10px]"></div>
-          </div>
-        <span class="leading-snug ms-2">Targeted economic growth areas</span>
-    </label>
-    <label class="flex items-center justify-between w-full text-sm text-gray-700">
-        <div class="relative">
-            <input type="checkbox" class="sr-only overlay-toggle peer" value="parcels-newPermits2010" />
-            <div class="w-6 h-3.5 bg-gray-300 rounded-full peer-checked:bg-gray-600 transition-colors"></div>
-            <div class="absolute top-[2px] left-[2px] w-2.5 h-2.5 bg-white border border-gray-400 rounded-full transition-transform peer-checked:translate-x-[10px]"></div>
-          </div>
-        <span class="leading-snug ms-2">New build permits, 2010-2019</span>
-    </label>
-    <label class="flex items-center justify-between w-full text-sm text-gray-700">
-        <div class="relative">
-            <input type="checkbox" class="sr-only overlay-toggle peer" value="parcels-newPermits2020" />
-            <div class="w-6 h-3.5 bg-gray-300 rounded-full peer-checked:bg-gray-600 transition-colors"></div>
-            <div class="absolute top-[2px] left-[2px] w-2.5 h-2.5 bg-white border border-gray-400 rounded-full transition-transform peer-checked:translate-x-[10px]"></div>
-          </div>
-        <span class="leading-snug ms-2">New build permits, 2020-present</span>
-    </label>
-    <label class="flex items-center justify-between w-full text-sm text-gray-700">
-        <div class="relative">
-            <input type="checkbox" class="sr-only overlay-toggle peer" value="manufacturedHomes" checked />
-            <div class="w-6 h-3.5 bg-gray-300 rounded-full peer-checked:bg-gray-600 transition-colors"></div>
-            <div class="absolute top-[2px] left-[2px] w-2.5 h-2.5 bg-white border border-gray-400 rounded-full transition-transform peer-checked:translate-x-[10px]"></div>
-          </div>
-        <span class="ms-2 leading-snug">Manufactured home parks</span>
-    </label>
-    <label class="flex items-center justify-between w-full text-sm text-gray-700">
-        <div class="relative">
-            <input type="checkbox" id="toggleCounty" class="sr-only overlay-toggle peer" />
-            <div class="w-6 h-3.5 bg-gray-300 rounded-full peer-checked:bg-gray-600 transition-colors"></div>
-            <div class="absolute top-[2px] left-[2px] w-2.5 h-2.5 bg-white border border-gray-400 rounded-full transition-transform peer-checked:translate-x-[10px]"></div>
-          </div>
-        <span class="ms-2 leading-snug">Hide surrounding counties</span>
-    </label> -->
     <!-- add in colors/to legend via js?? -->
   </div>
 </div>
@@ -334,21 +270,7 @@
                 '#4956C5',
                 '#071A43'
             ]
-    // const cbRentersPalette = [ //Sequential colorBrewer GrnBlu ramp
-    //             '#f6eff7',
-    //             '#bdc9e1',
-    //             '#67a9cf',
-    //             '#1c9099',
-    //             '#016c59'
-    //         ]
-    // const cbOwnersPalette = [ //Sequential colorBrewer BluPur ramp
-    //             '#edf8fb',
-    //             '#b3cde3',
-    //             '#8c96c6',
-    //             '#8856a7',
-    //             '#810f7c'
-    //         ]
-
+   
     const pricePalette = [
                 '#f1eef6',
                 '#bdc9e1',
@@ -365,7 +287,7 @@
                 '#006837'
             ]
 
-    const hhChangePalette = [ //Diverging colorBrewer PurGre ramp
+    const hhChangePalette = [ //Diverging colorBrewer PurGre ramp //change to change palette??
                 '#762a83',
                 '#af8dc3',
                 '#e7d4e8',
@@ -397,16 +319,6 @@
     //             '#54278f'
     //         ]
 
-    // const taxCreditPalette = [ //categorical palette for tax credits -- update!!
-    //             { key: "HMST", color: '#f2e22c', label: "Homestead" },
-    //             { key: "MIL", color: '#fa2a73', label: "Military" },
-    //             { key: "AG", color: '#559428', label: "Agriculture" },
-    //             { key: "S42", color: '#79a8f2', label: "" },
-    //             { key: "HMST,MIL", color: '#e4ac28', label: "Homestead, Military" },
-    //             { key: "HMST,AG", color: '#a7d96d', label: "Homestead, Agriculture" },
-    //             { key: "HMST,AG,MI", color: '#8b63ba', label: "Homestead, Agriculture, Military" },
-    //             { key: "NONE", color: '#bdc9e1', label: "None"}
-    //         ]
     // const landUsePalette = [ //only set this up for custom legends unless there is a way to set inner html of breaks/stops dynamically??
     //             { key: "A", color: "#24910a", label: "Agriculture" },
     //             { key: "A,AD", color: "#d4f088", label: "Agricultural/residential" },
@@ -457,7 +369,7 @@ function batchSetFeatureStates({ //batching experiment
     if (i < data.length) {
       setTimeout(processNextBatch, delay); // Yield to keep UI responsive
     } else {
-      console.log(`✅ Finished setting feature state for ${data.length} features.`);
+      console.log(`Finished setting feature state for ${data.length} features.`);
     }
   }
 
@@ -559,7 +471,7 @@ function batchSetFeatureStates({ //batching experiment
                     });
                 });
 
-                // fetch('https://raw.githubusercontent.com/CommunityScale/CMRPC/main/CMRPC_2025_Residensity_Parcel_250801.json')
+                // fetch('https://raw.githubusercontent.com/CommunityScale/CMRPC/main/CMRPC_2025_Residensity_Parcel_250801.json') //replace with new parcels 
                 // .then(response => response.json())
                 // .then(data => {
                 //     data.forEach(f => {
@@ -581,7 +493,7 @@ function batchSetFeatureStates({ //batching experiment
                 //     });
                 // });
 
-                // fetch('https://raw.githubusercontent.com/CommunityScale/CMRPC/main/CMRPC_2025_Residensity_Parcel_250801.json')
+                // fetch('https://raw.githubusercontent.com/CommunityScale/CMRPC/main/CMRPC_2025_Residensity_Parcel_250801.json') //replace with pittsfield parcels
                 //     .then(response => response.json())
                 //     .then(data => {
                 //         let skipped = 0;
