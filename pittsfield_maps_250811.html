@@ -1553,7 +1553,7 @@ function renderLegendFromStops(layerId) {
     return;
   }
 
-  //prevent duplicates
+  //prevent duplicates 
   const seen = new Set();
   const uniqueStops = stops.filter(stop => {
     const label = getLabel(stop);
