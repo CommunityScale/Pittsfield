@@ -88,11 +88,11 @@
         <option value="zip-currentZHVI">Typical Home Price by Zip Code (2025)</option>
         <option value="zip-chZHVI"> Change in Typical Home Price (2020-2025)</option>
         <!--<option value="tracts-rdAge">Risk Displacement - Age</option> 
-        <option value="tracts-rdRace">Risk Displacement - Race & Ethnicity</option> 
-        <option value="parcels-density">Residential density</option> -->
+        <option value="tracts-rdRace">Risk Displacement - Race & Ethnicity</option>--> 
+        <option value="parcels-density">Residential density</option>
         <!--<option value="tracts-conditions">Neighborhood Conditions</option>-->
-        <!--<option value="parcels-landuse">Property Class</option> 
-        <option value="parcels-ownership">Property Tax Credits</option>
+        <option value="parcels-landuse">Current land use</option> 
+        <!--<option value="parcels-ownership">Property Tax Credits</option>
         <option value="parcels-pctLV">Land Value as Percent of Assessed Value</option>
         <option value="parcels-value">Parcel Value Per Acre</option>-->
         <option value="admin-layer">Massachusetts tracts</option> <!--maybe just use outlines here?? add as toggle?? idk -->
@@ -250,16 +250,16 @@
         'ctysds-pctHH',
         'zip-currentZHVI',
         'zip-chZHVI',
-        //'parcels-landuse',
+        'parcels-landuse',
         //'parcels-pctLV',
         //'parcels-value',
         //'parcels-ownership',
-        //'parcels-density'
+        'parcels-density'
         //'admin-layer' //not sure if admin layer should be included here
     ];
 
     const overlayLayers = [ // all overlay layers need to be listed here
-        "towns-layer"
+        "town-layer"
         ];
 
     //all palettes here!!
@@ -319,21 +319,24 @@
     //             '#54278f'
     //         ]
 
-    // const landUsePalette = [ //only set this up for custom legends unless there is a way to set inner html of breaks/stops dynamically??
-    //             { key: "A", color: "#24910a", label: "Agriculture" },
-    //             { key: "A,AD", color: "#d4f088", label: "Agricultural/residential" },
-    //             { key: "R", color: "#fff8bf", label: "Residential" },
-    //             { key: "M", color: "#ffa734", label: "Multifamily" },
-    //             { key: "C", color: "#da6262", label: "Commercial" }, 
-    //             { key: "C,R", color: "#b560bb", label: "Mixed use" },
-    //             { key: "C,M", color: "#b560bb", label: "Mixed use" }, //duplicate for viz purposes
-    //             { key: "I", color: "#323052", label: "Industrial" },
-    //             { key: "E", color: "#425A70", label: "Exempt" },
-    //             { color: "#bdc9e1", label: "Unknown" }
-    //         ]
+    const landUsePalette = [ //only set this up for custom legends unless there is a way to set inner html of breaks/stops dynamically??
+                { key: "R-L", color: "#fffbd7", label: "Low density residential" },
+                { key: "R-M", color: "#fff8bf", label: "Medium density residential" },
+                { key: "R-H", color: "#fff17f", label: "High density residential" },
+                { key: "R-O", color: "#ffab3c", label: "Other housing" },
+                { key: "MU-R", color: "#d899dd", label: "Mixed use with residential" },
+                { key: "COMM", color: "#df2d83", label: "Commercial" },
+                { key: "GR", color: "#d4f088", label: "Greenspace" },
+                { key: "IND", color: "#767676", label: "Industrial" },
+                { key: "IMP", color: "#f0f420", label: "Improved land" },
+                { key: "DEV-R", color: "#cf820f", label: "Developable as residential"},
+                { key: "UND", color: "#d5d5d5", label: "Undevelopable"},
+                { key: "EXE", color: "#425A70", label: "Exempt" },
+                { key: "UNK", color: "#bdc9e1", label: "Unknown" }
+            ]
 
    const palettesByLayer = { //leave empty if not needed
-//             'parcels-landuse': landUsePalette,
+            'parcels-landuse': landUsePalette,
 //             'parcels-ownership': taxCreditPalette
 //   //best way to match palettes to their respective layers ?? particularly for categorical layers
 };
@@ -429,7 +432,7 @@ function batchSetFeatureStates({ //batching experiment
 
         map.addSource("parcels", {    
             type: "vector",
-            url: 'mapbox://communityscale.massachusetts-parcels', //update to stream json source + join!!
+            url: 'mapbox://communityscale.pittsfield-parcels', //update to stream json source + join!!
             promoteId: "LOC_ID"
         })
    
@@ -471,27 +474,28 @@ function batchSetFeatureStates({ //batching experiment
                     });
                 });
 
-                // fetch('https://raw.githubusercontent.com/CommunityScale/CMRPC/main/CMRPC_2025_Residensity_Parcel_250801.json') //replace with new parcels 
-                // .then(response => response.json())
-                // .then(data => {
-                //     data.forEach(f => {
-                //     const id = f.LOC_ID.toString(); // Ensure ID is a string
-                //     const duaVal = Number(f["DUA"]);
-                //     map.setFeatureState(
-                //         {
-                //         source: 'parcels',
-                //         sourceLayer: 'tracts',
-                //         id: id
-                //         },
-                //         {
-                //         density: duaVal, //change to number??
-                //         useCode: f["StandardizedUseCodes"],
-                //         SiteAddress: f["SiteAddress"],
-                //         description: f["UseDesc"]
-                //         }
-                //     )
-                //     });
-                // });
+                fetch('https://raw.githubusercontent.com/CommunityScale/Pittsfield/8e7525b09bc9e90c95c17dd30cbb47a58e6d0a62/parcels_pittsfield_dua_useCodes_250814.json') //replace with new parcels 
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(f => {
+                    const id = f.LOC_ID.toString(); // Ensure ID is a string
+                    const duaVal = Number(f["DUA"]);
+                    map.setFeatureState(
+                        {
+                        source: 'parcels',
+                        sourceLayer: 'parcels',
+                        id: id
+                        },
+                        {
+                        density: duaVal, //change to number??
+                        useCode: f["StandardizedUseCodes"],
+                        SiteAddress: f["SiteAddress"],
+                        description: f["AssessorUseDesc"],
+                        landUse: f["use"]
+                        }
+                    )
+                    });
+                });
 
                 // fetch('https://raw.githubusercontent.com/CommunityScale/CMRPC/main/CMRPC_2025_Residensity_Parcel_250801.json') //replace with pittsfield parcels
                 //     .then(response => response.json())
@@ -530,13 +534,13 @@ function batchSetFeatureStates({ //batching experiment
                 // .catch(err => console.error("Failed to load parcel data:", err));
 
 
-                fetch('https://raw.githubusercontent.com/CommunityScale/CMRPC/main/CMRPC_2025_Residensity_Parcel_250801.json') //batching experiment!
+                fetch('https://raw.githubusercontent.com/CommunityScale/Pittsfield/8e7525b09bc9e90c95c17dd30cbb47a58e6d0a62/parcels_pittsfield_dua_useCodes_250814.json') //batching experiment!
                     .then(response => response.json())
                     .then(data => {
                         batchSetFeatureStates({
                         data,
                         source: 'parcels',
-                        sourceLayer: 'tracts',
+                        sourceLayer: 'parcels',
                         batchSize: 1000,     // adjustable
                         delay: 50,           // ms delay between batches
                         });
@@ -716,7 +720,7 @@ const interpolateLayers = [
         //     property: "density",
         //     data_source: "parcels",
         //     source_layer: "tracts",
-        //     source_url: "https://raw.githubusercontent.com/CommunityScale/CMRPC/main/CMRPC_2025_Residensity_Parcel_250801.json",
+        //     source_url: "https://raw.githubusercontent.com/CommunityScale/Pittsfield/9be2437abc130ab7056744b076121f9e558ebf14/residensity_parcels_250811.json",
         //     colors: sequentialPalette, //replaced with sequentialPalette for color consistency 
         //     defaultViz: "none",
         //     useFeatureState: true
@@ -743,7 +747,7 @@ const interpolateLayers = [
         //     id: "parcels-density",
         //     property: "DUA", //LIPA
         //     data_source: "parcels",
-        //     source_url: "https://raw.githubusercontent.com/CommunityScale/JohnsonCounty/main/uninc_parcels_jcia.geojson",
+        //     source_url: "https://raw.githubusercontent.com/CommunityScale/Pittsfield/9be2437abc130ab7056744b076121f9e558ebf14/residensity_parcels_250811.json",
         //     colors: parcelValuePalette,
         //     defaultViz: "none",
         //     useFeatureState: true
@@ -911,7 +915,9 @@ const interpolateLayers = [
             ]
 ]
 }
-    }, labelLayerId);
+    }, 
+    labelLayerId
+);
 
     console.log(`Layer ${id} added.`);
   }
@@ -1190,7 +1196,7 @@ map.addLayer({
             id: "parcels-density",  
             type: "fill",
             source: "parcels",
-            'source-layer': 'tracts',
+            'source-layer': 'parcels',
             paint: {
                 "fill-color": [
                     "case", ["==", ["feature-state", "density"], null], 'transparent',
@@ -1224,40 +1230,45 @@ map.addLayer({
     )
 
 
-    // map.addLayer({
-    //             id: "parcels-landuse", //update with parcel types!!
-    //             type: "fill",
-    //             source: "parcels",
-    //             paint: {
-    //                 "fill-color": [
-    //                     "match",
-    //                     ["get", "PropClass"],
-    //                     "A", landUsePalette[0].color,
-    //                     "A,AD", landUsePalette[1].color,
-    //                     "C", landUsePalette[4].color,
-    //                     "C,M", landUsePalette[6].color,
-    //                     "C,R", landUsePalette[5].color,
-    //                     "E", landUsePalette[8].color,
-    //                     "I", landUsePalette[7].color,
-    //                     "R", landUsePalette[2].color,
-    //                     "M", landUsePalette[3].color,
-    //                     landUsePalette[9].color
-    //                 ],
-    //                 "fill-outline-color": communityScaleGray,
-    //                 "fill-opacity": [
-    //                 "case", ["==", ["get", "PropClass"], null], 0.3,
-    //                 ["case",
-    //                 ["boolean", ["feature-state", "hover"], false],
-    //                 0.95,
-    //                 0.66
-    //         ]]},
-    //             layout: {
-    //                 visibility: "none"
-    //             }
-    //         }, 
-    //         labelLayerId)
+    map.addLayer({
+                id: "parcels-landuse", //update with parcel types!!
+                type: "fill",
+                source: "parcels",
+                'source-layer': "parcels",
+                paint: {
+                    "fill-color": [
+                        "match",
+                        ["feature-state", "landUse"],
+                        "R-L", landUsePalette[0].color,
+                        "R-M", landUsePalette[1].color,
+                        "R-H", landUsePalette[2].color,
+                        "R-0", landUsePalette[3].color,
+                        "MU-R", landUsePalette[4].color,
+                        "COMM", landUsePalette[5].color,
+                        "GR", landUsePalette[6].color,
+                        "IND", landUsePalette[7].color,
+                        "IMP", landUsePalette[8].color,
+                        "DEV-R", landUsePalette[9].color,
+                        "UND", landUsePalette[10].color,
+                        "EXE", landUsePalette[11].color,
+                        "UNK", landUsePalette[12].color,
+                        "#fff"
+                    ],
+                    "fill-outline-color": "#777777",
+                    "fill-opacity": [
+                    "case", ["==", ["feature-state", "landUse"], null], 0.3,
+                    ["case",
+                    ["boolean", ["feature-state", "hover"], false],
+                    0.95,
+                    0.66
+            ]]},
+                layout: {
+                    visibility: "none"
+                }
+            }, 
+            labelLayerId)
 
-    // map.addLayer({ 
+    // map.addLayer({
     //         id: "parcels-pctLV",  
     //         type: "fill",
     //         source: "parcels",
@@ -1425,7 +1436,7 @@ const allFillLayers = [
     'zip-currentZHVI',
     'zip-chZHVI',
     'parcels-density',
-    //'parcels-landuse',
+    'parcels-landuse',
     //'parcels-pctLV',
     //'parcels-value',
     //'parcels-ownership',
@@ -1479,16 +1490,48 @@ function getStopsFromLayer(layerId) {
   return [];
 }
 
+// Define formatting behavior by layer
+const percentLayers = [];
+const currencyLayers = ['median_income'];
+const numberLayers  = ['parcels-density'];
 
-//Label formatter --> need to fix for 0 values, what should happen to other values (need to edit for pctLV) --> correct for risk displacement
-function formatLegendLabel(value) {
-  if (typeof value === 'number') {
-    if (value < 2) return `${Math.round(value * 100)}%`; // decimal -> percent, figure out how to include values greater than -1; ${Math.round(value * 100)}%
-    if (value >= 1500) return `$${(Math.round(value / 1000) * 1000).toLocaleString()}`; // round to nearest 1000
+// Updated label formatter — now takes optional layerId
+function formatLegendLabel(value, layerId) {
+  if (typeof value !== 'number') return value; // Non-numeric stays as-is
+
+  // Percent formatting
+  if (percentLayers.includes(layerId)) {
+    return `${Math.round(value * 100)}%`;
+  }
+
+  // Currency formatting
+  if (currencyLayers.includes(layerId)) {
+    if (value >= 1500) {
+      return `$${(Math.round(value / 1000) * 1000).toLocaleString()}`;
+    }
     return `$${Math.round(value).toLocaleString()}`;
   }
-  return value;
+
+  // Plain number formatting
+  if (numberLayers.includes(layerId)) {
+    return Math.round(value).toLocaleString();
+  }
+
+  // Fallback: your original logic
+  if (value < 2) return `${Math.round(value * 100)}%`; 
+  if (value >= 1500) return `$${(Math.round(value / 1000) * 1000).toLocaleString()}`;
+  return `$${Math.round(value).toLocaleString()}`;
 }
+
+// //Label formatter --> need to fix for 0 values, what should happen to other values (need to edit for pctLV) --> correct for risk displacement
+// function formatLegendLabel(value) {
+//   if (typeof value === 'number') {
+//     if (value < 2) return `${Math.round(value * 100)}%`; // decimal -> percent, figure out how to include values greater than -1; ${Math.round(value * 100)}%
+//     if (value >= 1500) return `$${(Math.round(value / 1000) * 1000).toLocaleString()}`; // round to nearest 1000
+//     return `$${Math.round(value).toLocaleString()}`;
+//   }
+//   return value;
+// }
 
 
 
@@ -1501,7 +1544,8 @@ function renderLegendFromStops(layerId) {
     const match = palette.find(p => 
       (p.value === stop.value) || (p.color.toLowerCase() === stop.color.toLowerCase())
     );
-    return match?.label || formatLegendLabel(stop.value); // fallback to data value if no label
+    return match?.label || formatLegendLabel(stop.value, layerId);
+ // fallback to data value if no label
   }
 
   if (!stops.length) {
@@ -1643,7 +1687,7 @@ layerSelect.addEventListener('change', (e) => {
     function updateLayerOpacity() {
         const currentOpacity = parseFloat(document.getElementById("opacity").value);
         const props = {
-            //"parcels-landuse": "PropClass", //make sure property names exist...
+            "parcels-landuse": "landUse", //make sure property names exist...
             //"parcels-pctLV": "pctLandVal",
             //"parcels-value": "acreVal",
             "parcels-density": "density",
@@ -1709,7 +1753,7 @@ layerSelect.addEventListener('change', (e) => {
         const popUpLayers = [
             //"parcels-pctLV", 
             //"parcels-value",
-            //"parcels-landuse",
+            "parcels-landuse",
             //"parcels-ownership",
             "parcels-density",
             "tracts-medIncome",
@@ -1865,12 +1909,12 @@ layerSelect.addEventListener('change', (e) => {
             }
 
             case "parcels-landuse": {
-                const propClassVal = attributes.PropClass;
+                const propClassVal = attributes.landUse;
                 const propClassMatch = landUsePalette.find(entry => entry.key === propClassVal);
                 const displayPropClass = propClassMatch ? propClassMatch.label : "data unavailable";
                 html = `
                 <div class="popup-header">${parcelDisplayName}</div>
-                <div class="popup-content">Current land use designation: ${displayPropClass}.
+                <div class="popup-content">Current land use designation: ${displayPropClass}. For this property, that includes the following: ${attributes.description}.
                 </div>`;
             break;
             }
