@@ -1439,7 +1439,6 @@ const allFillLayers = [
     'parcels-landuse',
     //'parcels-pctLV',
     //'parcels-value',
-    //'parcels-ownership',
     'admin-layer'
 ];
 
@@ -1754,7 +1753,6 @@ layerSelect.addEventListener('change', (e) => {
             //"parcels-pctLV", 
             //"parcels-value",
             "parcels-landuse",
-            //"parcels-ownership",
             "parcels-density",
             "tracts-medIncome",
             "tracts-pctCostBurdenedRenters",
@@ -1841,21 +1839,21 @@ layerSelect.addEventListener('change', (e) => {
             break;
             }
 
-            case "tracts-rdAge": {
-                html = `
-                <div class="popup-header">${attributes.NAME}</div>
-                <div class="popup-content">${attributes.rd_seniors != null ? `Risk displacement score, with respect to age: ${attributes.rd_seniors}.` : 'No score available.'}
-                </div>`;
-            break;
-            }
+            // case "tracts-rdAge": {
+            //     html = `
+            //     <div class="popup-header">${attributes.NAME}</div>
+            //     <div class="popup-content">${attributes.rd_seniors != null ? `Risk displacement score, with respect to age: ${attributes.rd_seniors}.` : 'No score available.'}
+            //     </div>`;
+            // break;
+            // }
 
-            case "tracts-rdRace": {
-                html = `
-                <div class="popup-header">${attributes.NAME}</div>
-                <div class="popup-content">${attributes.rd_nonWhitePops != null ? `Risk displacement score, with respect to race and ethnicity: ${attributes.rd_nonWhitePops}.` : 'No score available.'} 
-                </div>`;
-            break;
-            }
+            // case "tracts-rdRace": {
+            //     html = `
+            //     <div class="popup-header">${attributes.NAME}</div>
+            //     <div class="popup-content">${attributes.rd_nonWhitePops != null ? `Risk displacement score, with respect to race and ethnicity: ${attributes.rd_nonWhitePops}.` : 'No score available.'} 
+            //     </div>`;
+            // break;
+            // }
 
             case "ctysds-pctHH": { 
                 const pctChangeHH = attributes.pctChangeHH;
@@ -1919,27 +1917,25 @@ layerSelect.addEventListener('change', (e) => {
             break;
             }
 
-            // case "parcels-density": { //add density pop-up!!
-            //     const propClassVal = attributes.PropClass;
-            //     const propClassMatch = landUsePalette.find(entry => entry.key === propClassVal);
-            //     const displayPropClass = propClassMatch ? propClassMatch.label : "data unavailable";
-            //     html = `
-            //     <div class="popup-header">${parcelDisplayName}</div>
-            //     <div class="popup-content">Current land use designation: ${displayPropClass}.
-            //     </div>`;
-            // break;
-            // }
-
-            case "parcels-ownership": {
-                const propTaxCredits = attributes.credits;
-                const taxCreditMatch = taxCreditPalette.find(entry => entry.key === propTaxCredits);
-                const displayCredits = taxCreditMatch ? taxCreditMatch.label : "data unavailable";
+            case "parcels-density": { 
+                const roundedDensity = Math.round(attributes.density * 100) /100;
                 html = `
                 <div class="popup-header">${parcelDisplayName}</div>
-                <div class="popup-content">Tax credits received applied to this parcel: ${displayCredits}.
+                <div class="popup-content">This parcel has a residential density of ${roundedDensity} units per acre.
                 </div>`;
             break;
             }
+
+            // case "parcels-ownership": {
+            //     const propTaxCredits = attributes.credits;
+            //     const taxCreditMatch = taxCreditPalette.find(entry => entry.key === propTaxCredits);
+            //     const displayCredits = taxCreditMatch ? taxCreditMatch.label : "data unavailable";
+            //     html = `
+            //     <div class="popup-header">${parcelDisplayName}</div>
+            //     <div class="popup-content">Tax credits received applied to this parcel: ${displayCredits}.
+            //     </div>`;
+            // break;
+            // }
 
             case "admin-layer": {
                 html = `
@@ -2130,11 +2126,11 @@ const layerDescriptions = { //edit as needed; some base text should be re-useabl
   `,
   'tracts-pctCostBurdenedRenters': `
     <p><strong>Cost-burdened renters</strong>: % of renters spending more than 30% of income on housing costs.</p><br>
-    <p><em>Source(s):</em> Table B25140, 2023 ACS 5-year estimates; CommunityScale.</p>
+    <p><em>Source(s):</em> Table B25077, 2023 ACS 5-year estimates; CommunityScale.</p>
   `,
   'tracts-pctCostBurdenedOwners': `
     <p><strong>Cost-burdened owners</strong>: % of homeowners, with and without mortgages, spending more than 30% of income on housing.</p><br>
-    <p><em>Source(s):</em> Table B25140, 2023 ACS 5-year estimates; CommunityScale.</p>
+    <p><em>Source(s):</em> Table B25095, 2023 ACS 5-year estimates; CommunityScale.</p>
   `,
   'parcels-pctLV': `
     <p><strong>Land value as a percent of total parcel value</strong>. Higher percentages may indicate urban blight, vacant land, or aging housing stock in urban areas. In rural contexts, higher values may simply indicate agricultural land use.</p><br>
@@ -2142,17 +2138,13 @@ const layerDescriptions = { //edit as needed; some base text should be re-useabl
   `,
   'parcels-landuse': `
     <p><strong>Land use classifications</strong> from local parcel data.</p><br>
-    <p><em>Source(s):</em> 2024 Johnson County, IA Assessor's Office parcel database; CommunityScale.</p>
+    <p><em>Source(s):</em>MassGIS standardized assessors' parcel mapping data set; CommunityScale.</p>
   `,
-  'parcels-ownership': `
-    <p><strong>Property tax credit</strong> data reveals where ......</p><br>
-    <p><em>Source(s):</em> 2024 Johnson County, IA Assessor's Office parcel database; CommunityScale.</p>
+  'parcels-density': `
+    <p><strong>Residential unit density</strong> by parcel provides insight into land development patterns.</p><br>
+    <p><em>Source(s):</em> Residensity, Massachusetts Housing Partnership.</p>
   `,
-  'parcels-value': `
-    <p><strong>Parcel value per acre</strong> normalizes parcel value over the acre and may provide insight into development value, potential tax revenue, and land prices.</p><br>
-    <p><em>Source(s):</em> 2024 Johnson County, IA Assessor's Office parcel database; CommunityScale.</p>
-  `,
-  'zip-currentZHVI': `
+  'zip-currentZHVI': ` 
     <p>This layer examines <strong>current typical home price</strong> trends across Massachusetts by zipcode. Zipcodes may be missing values due to a lack of substantial sales and listing data in rural areas.</p><br>
     <p><em>Source(s):</em> Zillow Home Value Index (ZHVI), March 2025; CommunityScale.</p>
   `,
@@ -2161,8 +2153,8 @@ const layerDescriptions = { //edit as needed; some base text should be re-useabl
     <p><em>Source(s):</em> Zillow Home Value Index (ZHVI), March 2020, March 2025; CommunityScale.</p>
   `,
   'ctysds-pctHH': `
-    <p><strong>Parcel value per acre</strong> normalizes parcel value over the acre and may provide insight into development value, potential tax revenue, and land prices.</p><br>
-    <p><em>Source(s):</em> Table BXXXXXX, 2023 ACS 5-year estimates, 2020 ACS 5-year estimates; CommunityScale.</p>
+    <p><strong>Change in household count</strong> is visualized at the county subdivision to illustrate subregional change in household numbers over the past ten years.</p><br>
+    <p><em>Source(s):</em> Table S1101, 2023 ACS 5-year estimates, 2015 ACS 5-year estimates; CommunityScale.</p>
   `
 };
 
